@@ -1,0 +1,6 @@
+---
+#windout web return its content
+- hosts: control
+  become: true
+  roles:
+    - control

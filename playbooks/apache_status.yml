@@ -1,0 +1,27 @@
+---
+- hosts: vm1
+  become: true
+  tasks:
+    - name: verify apache2 service
+      command: service apache2 status
+
+    - name: verify apache2 is listening on 80
+      wait_for: port=80 timeout=1
+
+    - name: verify mysql service
+      command: service mysql status
+
+    - name: verify apache2 is listening on 80
+      wait_for: port=3306 timeout=1
+
+#windout web return its content
+- hosts: control
+  tasks:
+    - name: verify backend index response
+      uri: url=http://{{item}} return_content=yes
+      with_items: vm.com
+      register: app_index
+
+    - fail: msg="index failed to return content"
+      when: "'Hello, from sunny' not in item.content"
+      with_items: "{{app_index.results}}"

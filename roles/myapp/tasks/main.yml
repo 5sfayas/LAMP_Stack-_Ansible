@@ -1,0 +1,24 @@
+---
+# tasks file for myapp
+- name: install httpd
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+    - python-pip
+    - python-virtualenv
+    - python-mysqldb
+
+- name: copy my website to /var/www/demo
+  copy: src=demo/app/ dest=/var/www/demo mode=0755
+  notify: apache restarted
+
+- name: copy apache virtual host config
+  copy: src=demo/demo.conf dest=/etc/apache2/sites-available mode=0755
+  notify: apache restarted
+
+- name: setup python virtualenv
+  pip: requirements=/var/www/demo/requirements.txt virtualenv=/var/www/demo/.venv
+  notify: apache restarted
+
+- name: activate demo apache site
+  file: src=/etc/apache2/sites-available/demo.conf dest=/etc/apache2/sites-enabled/demo.conf state=link
+  notify: apache restarted

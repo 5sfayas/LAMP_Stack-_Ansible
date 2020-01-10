@@ -1,0 +1,4 @@
+---
+#- import_playbook: getcontent.yml
+- import_playbook: httpd.yml
+- import_playbook: mysql.yml

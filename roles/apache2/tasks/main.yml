@@ -1,0 +1,17 @@
+---
+# tasks file for apache2
+- name: install httpd
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+    - apache2
+    - libapache2-mod-wsgi
+- name: turn on apache services
+  service: name=apache2 state=started enabled=yes
+
+- name: de-activate default apache site
+  file: path=/etc/apache2/sites-enabled/000-default.conf state=absent
+  notify: apache restarted
+
+- name: turn apacha mod_wsgi the trigger apache2 restart
+  apache2_module: state=present name=wsgi
+  notify: apache restarted

@@ -1,0 +1,4 @@
+---
+# handlers file for myapp
+- name: apache restarted
+  service: name=apache2 state=restarted

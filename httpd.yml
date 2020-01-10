@@ -1,0 +1,7 @@
+---
+- name: apache installation on my vm1
+  hosts: vm1
+  become: true
+  roles:
+    - apache2
+    - myapp
