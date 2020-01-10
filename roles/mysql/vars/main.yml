@@ -1,2 +1,6 @@
 ---
-# vars file for mysql
+# vars file for mysq
+mysql_db_name: demo
+mysql_user: demo
+mysql_pass: demo
+mysql_db_user_host: '%'
